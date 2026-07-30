@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/1-API/">
+    <Project Path="Services Layer/Services Layer.csproj" />
+  </Folder>
+  <Folder Name="/2-Dominio/">
+    <Project Path="Domain Layer/Domain Layer.csproj" />
+  </Folder>
+  <Folder Name="/3-Banco de Dados/">
+    <Project Path="Data Layer/Data Layer.csproj" />
+  </Folder>
+</Solution>
