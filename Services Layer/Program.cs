@@ -6,6 +6,10 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
+//Configurando a biblioteca do Swagger
+builder.Services.AddEndpointsApiExplorer(); //Identificar endpoints da API
+builder.Services.AddSwaggerGen(); //Gerar documentação do swagger de forma automatica
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -13,6 +17,10 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
+
+//Executando o swagger
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseAuthorization();
 
