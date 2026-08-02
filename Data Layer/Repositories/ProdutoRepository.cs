@@ -1,6 +1,6 @@
-﻿using Dapper;
+﻿using Data_Layer.Contexts;
 using Domain_Layer.Entities;
-using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,60 +9,38 @@ namespace Data_Layer.Repositories
 {
     public class ProdutoRepository
     {
-        private readonly string _connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=DataLayerDB;Integrated Security=True;";
+        private readonly DataContext _context;
+
+        public ProdutoRepository(DataContext context)
+        {
+            _context = context;
+        }
         public void AddProdutc(Produto produto)
         {
-            // Add product to database
-            var sql = """
-                INSERT INTO PRODUTOS (ID, NOME, PRECO, QUANTIDADE, DATAHORACADASTRO)
-                VALUES (@Id, @Nome, @Preco, @Quantidade, @DataHoraCadastro)
-                """;
-
-            using (var connection = new SqlConnection(_connectionString)) 
-            {
-                connection.Execute(sql, produto);
-            };
+            _context.Produtos.Add(produto);
+            _context.SaveChanges();
         }
 
         public void UpdateProduct(Produto produto)
         {
-            // Update product from database
-            var sql = """
-                UPDATE PRODUTOS SET NOME = @Nome, PRECO = @Preco, QUANTIDADE = @Quantidade WERE ID = @Id
-                """;
-
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                connection.Execute(sql, produto);
-            }
-            ;
+            _context.Produtos.Update(produto);
+            _context.SaveChanges();
         }
 
-        public void DeleteProduct(Guid id)
+        public void DeleteProduct(Produto produto)
         {
-            //Delete product from database
-            var sql = """
-                DELETE FROM PRODUTOS WHERE ID = @Id
-                """;
-
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                connection.Execute(sql, new { @Id = id});
-            }
-            ;
+            _context.Produtos.Remove(produto);
+            _context.SaveChanges();
         }
 
         public List<Produto> GetProduct()
         {
-            var sql = """
-                SELECT ID, NOME, PRECO, QUANTIDADE, DATAHORACADASTRO FROM PRODUTOS ORDER BY DATAHORACADASTRO DESC
-                """;
+            return _context.Produtos.AsNoTracking().OrderByDescending(produto => produto.DataHoraCadastro).ToList();
+        }
 
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                return connection.Query<Produto>(sql).ToList();
-            }
-            ;
+        public Produto? GetById(Guid id)
+        {
+            return _context.Produtos.AsNoTracking().FirstOrDefault(produto => produto.IdProduto == id);
         }
     }
 }
