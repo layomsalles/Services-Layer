@@ -40,7 +40,7 @@ namespace Services_Layer.Controllers
 
                 _produtoRepository.AddProdutc(produto);
 
-                return StatusCode(201, new { message = "Product registered successfully" }, produto);
+                return StatusCode(201, new { message = "Product registered successfully", produto });
             } catch (Exception error)
             {
                 return StatusCode(500, new { message = $"Error registering product {error.Message}" });
@@ -92,7 +92,7 @@ namespace Services_Layer.Controllers
 
                 _produtoRepository.UpdateProduct(product);
 
-                return Ok(new { message = "Product update successfully" }, product);
+                return Ok(new { message = "Product update successfully", product });
             } catch (Exception error)
             {
                 return StatusCode(500, new { message = $"Error updating product {error.Message}" });
