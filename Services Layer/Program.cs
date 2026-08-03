@@ -22,8 +22,6 @@ builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer(); //Identificar endpoints da API
 builder.Services.AddSwaggerGen(); //Gerar documentação do swagger de forma automatica
 
-var app = builder.Build();
-
 //Configurando o CORS para permitir requisições do Angular
 builder.Services.AddCors(options =>
 {
@@ -32,6 +30,9 @@ builder.Services.AddCors(options =>
         Defaultpolicy.WithOrigins("http://localhost:4200").AllowAnyHeader().AllowAnyMethod();
     });
 });
+
+var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -45,9 +46,10 @@ app.UseSwaggerUI();
 
 app.UseAuthorization();
 
-app.MapControllers();
-
 //Aplicando a politica do CORS
 app.UseCors("Angular");
+
+app.MapControllers();
+
 
 app.Run();
